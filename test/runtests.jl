@@ -3,6 +3,7 @@ using JSON
 using NMR
 
 addprocs(Sys.CPU_CORES)
+@everywhere using NMR
 
 @time cd(joinpath(Pkg.dir("NMR"), "test")) do
   function run_test(testfile)

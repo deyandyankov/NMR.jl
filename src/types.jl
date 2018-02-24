@@ -1,14 +1,14 @@
-immutable NMR
+struct Nmr
   jobid::Int
   inputs::Array{String}
   fun::Function
   outputfilename::String
 end
 
-type MapperException <: Exception
+struct MapperException <: Exception
   msg::String
 end
 
-type UDFException <: Exception
+struct UDFException <: Exception
   msg::String
 end

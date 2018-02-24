@@ -5,7 +5,7 @@ function split_raw_data(j)
     input_filename = joinpath(datadir, filename)
     !isfile(input_filename) && return true # not in data/ but already in split/
     info("Splitting $input_filename using $(length(wrkrs)) workers")
-    output_filenames = Array(String, length(wrkrs))
+    output_filenames = Array{String}(length(wrkrs))
     for i in 1:length(wrkrs)
       output_dir = joinpath(splitdir, string(wrkrs[i]))
       !isdir(output_dir) && mkdir(output_dir)
@@ -18,7 +18,7 @@ function split_raw_data(j)
       current_output_file = output_filenames[handle]
       # println("current handle: $(handle) and current output filename $(output_filenames[handle])")
       current_handle = handles[handle]
-      write(current_handle, ln) # write line into current handle
+      write(current_handle, ln * "\n") # write line into current handle
       handle += 1 # get next handle
       if handle > length(handles)
         handle = 1 # cycle back to first handle once handles have been exhausted

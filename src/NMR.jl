@@ -15,4 +15,14 @@ module NMR
   ctx = Dict{String, Any}()
   default_ctx = Dict{String, Any}()
 
+  function runjob(j)
+    info("Running job: $j")
+    split_raw_data(j)
+    create_job_area(j)
+    phase_run(j)
+    ctx = copy(default_ctx)
+
+    return true
+  end
+
 end # module

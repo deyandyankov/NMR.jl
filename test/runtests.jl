@@ -5,11 +5,7 @@ using NMR
 addprocs(Sys.CPU_CORES)
 @everywhere using NMR
 
-@time cd(joinpath(Pkg.dir("NMR"), "test")) do
-  function run_test(testfile)
-    info("Running test file $(testfile)")
-    include(testfile)
-  end
-  testfiles = [f for f in readdir(".") if isfile(f) && startswith(f, "test_") && endswith(f, ".jl")]
-  map(run_test, testfiles)
-end
+include("test_lineofsight.jl")
+include("test_listofflights.jl")
+include("test_numberofflights.jl")
+include("test_numpassengers.jl")

@@ -1,7 +1,9 @@
 ### Calculate the number of passengers on each flight
 NMR.clean_split_dir()
-NMR.runjob(NMR.Nmr(3, ["AComp_Passenger_data.csv"], NMR.mapper_parserecordacomp, "acomp.csv"))
-NMR.runjob(NMR.Nmr(3, ["acomp.csv"], NMR.reducer_numberofpassengers, "acomp_reduced.json"))
-c = NMR.runcombiner("acomp_reduced.json", NMR.combiner_parsejson)
+jobid = 3
+NMR.runjob(NMR.Nmr(jobid, ["AComp_Passenger_data.csv"], NMR.mapper_parserecordacomp, "acomp.csv"))
+NMR.runjob(NMR.Nmr(jobid, ["acomp.csv"], NMR.reducer_numberofpassengers, "acomp_reduced.json"))
+output = NMR.runcombiner("acomp_reduced.json", NMR.combiner_parsejson)
 
-# @show c
+# store output
+NMR.save_job_output(jobid, "", output)

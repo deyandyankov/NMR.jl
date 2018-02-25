@@ -13,13 +13,13 @@ module NMR
   outputdir = "NMR_OUTPUTDIR" in keys(ENV) ? ENV["NMR_OUTPUTDIR"] : joinpath(pkgdir, "test", "output")
 
   ctx = Dict{String, Any}()
-  default_ctx = Dict{String, Any}()
 
   # required for correct module operation
   include("types.jl")
   include("io.jl")
   include("phases.jl")
-
+  include("haversine.jl")
+  
   # user defined functions and types
   include("udf/types.jl")
   include("udf/mappers.jl")
@@ -32,9 +32,14 @@ module NMR
     split_raw_data(j)
     create_job_area(j)
     phase_run(j)
-    ctx = copy(default_ctx)
+    @everywhere NMR.reset_ctx!()
 
     return true
+  end
+
+  function reset_ctx!()
+    global ctx
+    ctx = Dict{String, Any}()
   end
 
 end # module

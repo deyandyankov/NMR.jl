@@ -18,3 +18,15 @@ function mapper_parserecordacomp(x::AbstractString)
     totalflighttime
   )
 end
+
+function mapper_airportlatlon(x::AbstractString)
+  line = chomp(x)
+  separator = ","
+  isempty(line) && throw(MapperException("line is empty"))
+  s = split(line, separator)
+  Dict(
+    :airportcode => s[2],
+    :lat => parse(Float64, s[3]),
+    :lon => parse(Float64, s[4])
+  )
+end

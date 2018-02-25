@@ -9,7 +9,7 @@ function runfun(j)
   info("runfun worker $(myid()) initiated")
   length(j.inputs) > 2 && throw(ArgumentError("Cannot operate on more than two inputs."))
   length(j.inputs) == 1 && runfunsinglearg(j)
-  length(j.inputs) == 2 && runfunmultiplearg(j)
+#  length(j.inputs) == 2 && runfunmultiplearg(j)
   info("runfun worker $(myid()) finished")
 end
 
@@ -88,4 +88,17 @@ function runcombiner(filename, fun_combiner)
     append!(combined, fetch(p))
   end
   fun_combiner(combined)
+end
+
+function runcombiner(filename, fun_combiner, outputfilename)
+  output = runcombiner(filename, fun_combiner)
+  output_file_path = joinpath(datadir, outputfilename)
+  isfile(output_file_path) && rm(output_file_path)
+  fh = open(output_file_path, "w")
+  for l in output
+    write(fh, l * "\n")
+  end
+  close(fh)
+
+  output
 end

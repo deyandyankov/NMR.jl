@@ -32,7 +32,7 @@ end
 job_output_dir(j) = job_output_dir(j.jobid)
 job_output_dir(jobid::Int) = joinpath(outputdir, string(jobid))
 
-function save_job_output(jobid::Int, header::String, output::Array{String,1})
+function save_job_output(jobid::Int, header::String, output)
   output_file = joinpath(job_output_dir(jobid), "output.csv")
   isfile(output_file) && rm(output_file)
   fh = open(output_file, "w")

@@ -29,7 +29,20 @@ function split_raw_data(j)
   return true
 end
 
-job_output_dir(j) = joinpath(outputdir, string(j.jobid))
+job_output_dir(j) = job_output_dir(j.jobid)
+job_output_dir(jobid::Int) = joinpath(outputdir, string(jobid))
+
+function save_job_output(jobid::Int, header::String, output::Array{String,1})
+  output_file = joinpath(job_output_dir(jobid), "output.csv")
+  isfile(output_file) && rm(output_file)
+  fh = open(output_file, "w")
+  header != "" && write(fh, header * "\n")
+  for s in output
+    write(fh, s * "\n")
+  end
+  close(fh)
+  true
+end
 
 function create_job_area(j)
   info("Creating job area...")
@@ -47,4 +60,9 @@ function write_sink(j)
   outputfile = joinpath(splitdir, string(myid()), j.outputfilename)
   isfile(outputfile) && rm(outputfile)
   open(outputfile, "w")
+end
+
+function clean_split_dir()
+  rm(splitdir, force=true, recursive=true)
+  mkdir(splitdir)
 end

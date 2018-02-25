@@ -1,5 +1,7 @@
 ### Calculate the line-of-sight (nautical) miles for each flight and the total travelled by each passenger
 
+NMR.clean_split_dir()
+
 # this parses records in AComp_Passenger_data.cs into JSON, handling errors
 NMR.runjob(NMR.Nmr(4, ["AComp_Passenger_data.csv"], NMR.mapper_parserecordacomp, "acomplineofsight.json"))
 

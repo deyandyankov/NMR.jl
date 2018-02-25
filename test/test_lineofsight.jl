@@ -41,7 +41,7 @@ function getnauticalmiles()
    warn("Unable to find location of airport $dstairport")
    continue
   end
-  miles = haversine(airport_latlon(srcairport), airport_latlon(dstairport))
+  miles = NMR.haversine(airport_latlon(srcairport), airport_latlon(dstairport))
   flight_miles[p[1]] = miles
  end
  flight_miles
@@ -62,7 +62,6 @@ for p in psgr
   passenger_miles[passenger] = flight_miles[flight]
  end
 end
-@show passenger_miles
 
 header = "passenger,miles"
 output = ["$(k),$(passenger_miles[k])" for k in keys(passenger_miles)]

@@ -6,4 +6,5 @@ NMR.runjob(NMR.Nmr(jobid, ["acomp.csv"], NMR.reducer_numberofpassengers, "acomp_
 output = NMR.runcombiner("acomp_reduced.json", NMR.combiner_parsejson)
 
 # store output
-NMR.save_job_output(jobid, "", output)
+header = "flightid,passengers"
+NMR.save_job_output(jobid, header, output)

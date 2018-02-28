@@ -1,3 +1,4 @@
+"""Calculates line of sight distance between two points on the earth (earth radius and conversion to miles hardcoded below)"""
 function haversine(x, y)
     @inbounds begin
         # longitudes

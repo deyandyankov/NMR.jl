@@ -1,5 +1,6 @@
 reducer_noop(s) = s
 
+"""Used in to calculate number of flughts"""
 function reducer_numberofflights(s)
   j = JSON.parse(s)
   fromairport = j["originairport"]
@@ -7,6 +8,7 @@ function reducer_numberofflights(s)
   return ""
 end
 
+"""Used to calculate number of passengers"""
 function reducer_numberofpassengers(s)
   j = JSON.parse(s)
   flightid = j["flightid"]
@@ -15,6 +17,7 @@ function reducer_numberofpassengers(s)
   return ""
 end
 
+"""Used to calculate line of sight"""
 function reducer_lineofsightpassenger(s)
   j = JSON.parse(s)
   key = j["flightid"]

@@ -1,5 +1,6 @@
-# todo: potentially add caching. only execute if input filename has been modified after the splitdir contents
+"""Splits a global data file into a number of chunks that are later processed in parallel"""
 function split_raw_data(j)
+  # todo: potentially add caching. only execute if input filename has been modified after the splitdir contents
   for filename in j.inputs
     wrkrs = workers()
     input_filename = joinpath(datadir, filename)
@@ -32,6 +33,7 @@ end
 job_output_dir(j) = job_output_dir(j.jobid)
 job_output_dir(jobid::Int) = joinpath(outputdir, string(jobid))
 
+"""Saves the output of a job in its respective output directory"""
 function save_job_output(jobid::Int, header::String, output)
   output_file = joinpath(job_output_dir(jobid), "output.csv")
   isfile(output_file) && rm(output_file)
@@ -44,6 +46,7 @@ function save_job_output(jobid::Int, header::String, output)
   true
 end
 
+"""Creates an output area for a particular job. If such an area already exists, it is removed and recreated"""
 function create_job_area(j)
   info("Creating job area...")
   joboutputdir = job_output_dir(j)
@@ -51,11 +54,13 @@ function create_job_area(j)
   mkdir(joboutputdir)
 end
 
+"""Reads an inputfile for a particular job"""
 function read_sink(j, phase)
   inputfile = joinpath(job_output_dir(j), string(myid()) * "." * phase)
   open(inputfile)
 end
 
+"""Writes to an outputfile of a particular job"""
 function write_sink(j)
   outputfile = joinpath(splitdir, string(myid()), j.outputfilename)
   isfile(outputfile) && rm(outputfile)

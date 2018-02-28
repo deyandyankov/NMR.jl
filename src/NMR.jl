@@ -19,7 +19,7 @@ module NMR
   include("io.jl")
   include("phases.jl")
   include("haversine.jl")
-  
+
   # user defined functions and types
   include("udf/types.jl")
   include("udf/mappers.jl")
@@ -27,6 +27,7 @@ module NMR
   include("udf/reducers.jl")
   include("udf/combiners.jl")
 
+  """Main entry point for a MapReduce job"""
   function runjob(j)
     info("Running job: $j")
     split_raw_data(j)

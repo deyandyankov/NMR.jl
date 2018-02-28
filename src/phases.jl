@@ -1,3 +1,4 @@
+"""Initiates a phase"""
 function phase_run(j)
   info("initiating run phase")
   r = [@spawnat w runfun(j) for w in workers()]
@@ -5,11 +6,11 @@ function phase_run(j)
   info("run phase finished")
 end
 
+"""Runs a MapReduce job"""
 function runfun(j)
   info("runfun worker $(myid()) initiated")
   length(j.inputs) > 2 && throw(ArgumentError("Cannot operate on more than two inputs."))
   length(j.inputs) == 1 && runfunsinglearg(j)
-#  length(j.inputs) == 2 && runfunmultiplearg(j)
   info("runfun worker $(myid()) finished")
 end
 
@@ -43,43 +44,7 @@ function runfunsinglearg(j)
   info("runfunsinglearg $(myid()) finished")
 end
 
-function runfunmultiplearg(j)
-  info("runfunmultiplearg $(myid()) initiated")
-  input_filenamex = j.inputs[1]
-  input_filenamey = j.inputs[2]
-  io_output = write_sink(j)
-  inputfilex = joinpath(splitdir, string(myid()), input_filenamex)
-  for worker in workers()
-    inputfiley = joinpath(splitdir, string(worker), input_filenamey)
-    io_inputy = open(inputfiley)
-    io_inputx = open(inputfilex)
-    for (lineynum, liney) in enumerate(eachline(io_inputy))
-      for (linexnum, linex) in enumerate(eachline(io_inputx))
-        try
-          v = j.fun(linex, liney)
-          v == "" && continue
-          write(io_output, json(v) * "\n")
-        catch e
-          if typeof(e) in [MapperException, UDFException]
-            warn("[JOB $(j.jobid)] mapper encountered an exception of type $(typeof(e)) on line $(linenum): $(e.msg)")
-          else
-            rethrow(e)
-          end
-        end
-      end
-    end
-    close(io_inputy)
-    close(io_inputx)
-  end
-  if length(ctx) > 0
-    for (k, v) in ctx
-      write(io_output, json((k, v)) * "\n")
-    end
-  end
-  close(io_output)
-  info("runfunmultiplearg $(myid()) finished")
-end
-
+"""Runs a combiner"""
 function runcombiner(filename, fun_combiner)
   r = [@spawnat w readlines(joinpath(splitdir, string(w), filename)) for w in workers()]
   combined = []
@@ -90,6 +55,7 @@ function runcombiner(filename, fun_combiner)
   fun_combiner(combined)
 end
 
+"""Runs a combiner and stores the result in an output file"""
 function runcombiner(filename, fun_combiner, outputfilename)
   output = runcombiner(filename, fun_combiner)
   output_file_path = joinpath(datadir, outputfilename)

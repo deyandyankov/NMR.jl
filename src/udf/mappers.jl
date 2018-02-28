@@ -1,3 +1,4 @@
+"""Parses an AComp record"""
 function mapper_parserecordacomp(x::AbstractString)
   line = chomp(x)
   separator = ","
@@ -19,6 +20,7 @@ function mapper_parserecordacomp(x::AbstractString)
   )
 end
 
+"""Parses Airport lattitude/longitude"""
 function mapper_airportlatlon(x::AbstractString)
   line = chomp(x)
   separator = ","

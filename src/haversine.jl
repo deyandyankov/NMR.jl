@@ -15,7 +15,7 @@ function haversine(x, y)
     a = sin(Δφ/2)^2 + cos(φ₁)*cos(φ₂)*sin(Δλ/2)^2
 
     # distance on the sphere
-    distance_in_meters = round(2 * 6371e3 * asin( min(√a, one(a)) )) # take care of floating point errors
-    distance_in_miles = round(distance_in_meters / 1620, 2)
+    distance_in_meters = round(2 * 6.3781e6 * asin( min(√a, one(a)) )) # take care of floating point errors
+    distance_in_miles = round(distance_in_meters / 1_609, 2)
     distance_in_miles
 end

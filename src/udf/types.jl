@@ -9,6 +9,7 @@ struct UDFRAcomp
 end
 
 function UDFAirportName{T<:AbstractString}(value::T)
+  value = uppercase(value)
   length(value) < 3 && throw(UDFException("Airport Name must be longer than 3 characters: $value"))
   length(value) > 20 && throw(UDFException("Airport Name must be shorter than 20 symbols: $value"))
   value
